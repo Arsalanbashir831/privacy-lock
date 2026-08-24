@@ -1,0 +1,20 @@
+services:
+  app:
+    build:
+      context: .
+    image: secretshare:local
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3010:3000"
+    volumes:
+      - secretshare-data:/app/.data
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+
+volumes:
+  secretshare-data:

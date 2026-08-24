@@ -23,3 +23,14 @@ Open `http://localhost:3000`. Do not serve `index.html` directly: link creation 
 ## Deployment notes
 
 Use HTTPS in production; Web Crypto is restricted to secure contexts outside localhost. Mount `.data` on persistent, encrypted storage and run exactly one application instance when using the bundled file store. A multi-instance deployment should replace the store with a database operation equivalent to `DELETE ... RETURNING` in one transaction. Put audited edge rate limiting and request-size limits in front of the Node process, monitor storage, back up configuration rather than ciphertext, and run an independent cryptographic/security review before handling high-value secrets.
+
+### CI/CD
+
+Pushes to `main` are tested and deployed by `.github/workflows/deploy.yml`. Configure the GitHub `production` environment with these repository secrets:
+
+- `DEPLOY_HOST`: the server hostname or IP address
+- `DEPLOY_USER`: an SSH user with access to Docker
+- `DEPLOY_PATH`: the absolute deployment directory
+- `DEPLOY_SSH_KEY`: the corresponding private SSH key
+
+The workflow preserves the named Docker volume containing encrypted secrets, deploys one application container, and verifies `/healthz` after every release. `ops/nginx-secretshare.conf` is the Nginx reverse-proxy configuration used for the production domain.

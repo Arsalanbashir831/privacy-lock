@@ -173,6 +173,9 @@ async function serveStatic(pathname, res) {
 const server = http.createServer(async (req, res) => {
   try {
     const url = new URL(req.url, `http://${req.headers.host || "localhost"}`);
+    if (req.method === "GET" && url.pathname === "/healthz") {
+      return json(res, 200, { status: "ok" });
+    }
     if (req.method === "POST" && url.pathname === "/api/secrets") return await createSecret(req, res);
     const match = url.pathname.match(/^\/api\/secrets\/([^/]+)(\/consume)?$/);
     if (match && ID_RE.test(match[1])) {
