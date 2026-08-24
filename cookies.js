@@ -1,6 +1,16 @@
 (function () {
-  const banner = document.getElementById("cookie-banner");
-  if (!banner) return;
+  let banner = document.getElementById("cookie-banner");
+  if (!banner) {
+    banner = document.createElement("aside");
+    banner.className = "cookie-banner";
+    banner.id = "cookie-banner";
+    banner.hidden = true;
+    banner.setAttribute("aria-labelledby", "cookie-title");
+    banner.setAttribute("aria-describedby", "cookie-copy");
+    const privacyPath = window.location.pathname.includes("/guides/") ? "../privacy.html#cookies" : "privacy.html#cookies";
+    banner.innerHTML = `<div class="cookie-copy"><p class="cookie-kicker" id="cookie-title">Privacy preference</p><p id="cookie-copy">We don’t use advertising or analytics cookies. We only save your choice on this device so this notice stays dismissed. <a href="${privacyPath}">Read our cookie policy</a>.</p></div><div class="cookie-actions"><button class="cookie-button cookie-button-secondary" type="button" data-cookie-choice="declined">Decline</button><button class="cookie-button" type="button" data-cookie-choice="accepted">Accept</button></div>`;
+    document.body.appendChild(banner);
+  }
 
   const preferenceKey = "privacy-lock-cookie-choice";
   let savedChoice = null;

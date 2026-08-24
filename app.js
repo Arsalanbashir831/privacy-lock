@@ -79,7 +79,7 @@ $("seal").addEventListener("click", () => {
   const id = rand(6).toLowerCase();
   const key = rand(30);
   linkEl.innerHTML =
-    `https://privacylock.io/note/${id}<span class="frag">#${key}</span>`;
+    `https://example.invalid/note/${id}<span class="frag">#${key}</span>`;
 
   $("stamp").classList.add("is-on");
   envelope.classList.add("is-sealed");
@@ -104,7 +104,7 @@ $("again").addEventListener("click", () => {
 $("copy").addEventListener("click", async () => {
   try {
     await navigator.clipboard.writeText(linkEl.textContent);
-    $("copystatus").textContent = "Copied — including the key after the #";
+    $("copystatus").textContent = "Prototype link copied — it is not a working share link";
   } catch {
     const r = document.createRange();
     r.selectNodeContents(linkEl);
