@@ -161,7 +161,7 @@ async function serveStatic(pathname, res) {
     const content = await readFile(file);
     res.writeHead(200, headers({
       "Content-Type": MIME[extname(file)],
-      "Cache-Control": extname(file) === ".html" ? "no-store" : "public, max-age=3600"
+      "Cache-Control": [".html", ".css", ".js"].includes(extname(file)) ? "no-cache" : "public, max-age=3600"
     }));
     res.end(content);
   } catch (error) {

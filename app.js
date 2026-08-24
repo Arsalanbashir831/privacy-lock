@@ -185,6 +185,8 @@ function showState(name) {
 const recipientMatch = location.pathname.match(/^\/s\/([A-Za-z0-9_-]{20,32})$/);
 let claimedSecret = null;
 let consumeToken = "";
+const recipientPassphrase = $("recipient-passphrase");
+const recipientPassphraseInput = $("recipient-passphrase-input");
 if (recipientMatch) {
   document.body.classList.add("recipient-mode");
   $("recipient-title").textContent = "A secret is waiting for you";
@@ -192,7 +194,9 @@ if (recipientMatch) {
   api(`/api/secrets/${recipientMatch[1]}`).then((info) => {
     consumeToken = info.consumeToken;
     $("rec-line").textContent = `Someone sent you an encrypted secret. It expires ${new Date(info.expiresAt).toLocaleString()}.`;
-    $("recipient-passphrase").hidden = !info.requiresPassphrase;
+    recipientPassphrase.hidden = !info.requiresPassphrase;
+    recipientPassphraseInput.disabled = !info.requiresPassphrase;
+    if (info.requiresPassphrase) recipientPassphraseInput.focus();
   }).catch((error) => { $("gone-message").textContent = error.message; showState("gone"); });
 }
 
@@ -202,8 +206,8 @@ $("reveal").addEventListener("click", async () => {
     return;
   }
   const button = $("reveal");
-  const passphrase = $("recipient-passphrase-input").value;
-  if (!$("recipient-passphrase").hidden && !passphrase) {
+  const passphrase = recipientPassphraseInput.disabled ? "" : recipientPassphraseInput.value;
+  if (!recipientPassphrase.hidden && !passphrase) {
     $("recipient-status").textContent = "Enter the passphrase before opening."; return;
   }
   button.disabled = true;
@@ -235,7 +239,7 @@ $("reveal").addEventListener("click", async () => {
   } catch (error) {
     if (error.name === "OperationError" && claimedSecret) {
       $("recipient-status").textContent = "Decryption failed. Check the passphrase and try again without refreshing this page.";
-      $("recipient-passphrase-input").focus();
+      recipientPassphraseInput.focus();
     } else {
       $("gone-message").textContent = error.message;
       showState("gone");
