@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Privacy Lock — one-time secret sharing prototype</title>
-<meta name="description" content="Explore a browser-based prototype for one-time secret sharing and learn practical techniques for handling credentials safely.">
+<title>Secretshare — encrypted one-time secret sharing</title>
+<meta name="description" content="Encrypt text and files in your browser and share them through one-time, expiring links.">
+<link rel="icon" type="image/png" href="/assets/secretsharelogo-favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62.5..125,400..900&family=Azeret+Mono:wght@400;500;600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="/styles.css">
 </head>
 <body>
 
@@ -18,17 +19,13 @@
   <div class="shell topbar-inner">
     <a class="brand" href="#top">
       <span class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-          <rect x="4" y="10.5" width="16" height="10" rx="1"/>
-          <path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>
-          <path d="M12 14v3.2"/>
-        </svg>
+        <img src="/assets/secretshare-transparent.png" alt="">
       </span>
-      <span class="brand-name">Privacy Lock</span>
+      <span class="brand-name">Secretshare</span>
     </a>
     <nav class="topnav" aria-label="Main">
       <a href="#compose">Send a secret</a>
-      <a href="resources.html">Security guides</a>
+      <a href="/resources.html">Security guides</a>
       <a href="#spec">How it works</a>
     </nav>
     <p class="topbar-status"><span class="dot" aria-hidden="true"></span>Encrypting in this browser</p>
@@ -38,7 +35,7 @@
 <main id="top">
 
   <div class="dev-notice" role="status">
-    <div class="shell"><strong>Development preview.</strong> This interface is an interactive prototype. It does not upload, deliver, or permanently store secrets. <a href="status.html">See current capabilities</a>.</div>
+    <div class="shell"><strong>End-to-end encrypted.</strong> Secret text and files are encrypted in this browser; the server receives ciphertext only. <a href="#spec">See how it works</a>.</div>
   </div>
 
   <!-- ── HERO ────────────────────────────────────────────────── -->
@@ -48,14 +45,13 @@
       <h1 class="hero-title">Send a password<br>once. Then it's<br><em>gone.</em></h1>
       <div class="hero-side">
         <p class="hero-lede">
-          Explore how a one-time secret workflow could feel. In this development build,
-          your input remains in this browser and the generated link is only a preview.
-          Do not use it to send real credentials or confidential files.
+          Encrypt secret text or a file in this browser and send a one-time link.
+          The decryption key stays after the URL <code>#</code> and is never sent to our server.
         </p>
         <dl class="ledger">
-          <div><dt>What this demo stores</dt><dd>Nothing remotely</dd></div>
-          <div><dt>What leaves the page</dt><dd>No secret content</dd></div>
-          <div><dt>Generated links</dt><dd>Preview only</dd></div>
+          <div><dt>What the server stores</dt><dd>Ciphertext only</dd></div>
+          <div><dt>Where encryption happens</dt><dd>This browser</dd></div>
+          <div><dt>Generated links</dt><dd>One open only</dd></div>
         </dl>
       </div>
     </div>
@@ -86,7 +82,7 @@
             <textarea id="secret" spellcheck="false" rows="6" placeholder='DATABASE_URL="postgres://admin:•••••••••@db.internal:5432/prod"
 STRIPE_SECRET_KEY="sk_live_•••••••••"'></textarea>
           </div>
-          <p class="field-note"><span id="charcount">0</span> characters — kept in this page for the prototype preview</p>
+          <p class="field-note"><span id="charcount">0</span> characters — encrypted locally before upload</p>
         </div>
 
         <div class="pane is-hidden" id="pane-file" role="tabpanel" aria-labelledby="tab-file" hidden>
@@ -110,10 +106,10 @@ STRIPE_SECRET_KEY="sk_live_•••••••••"'></textarea>
             <label for="destroy">Destroy the note</label>
             <div class="select-wrap">
               <select id="destroy">
-                <option>The moment it's read</option>
-                <option>After 1 hour, read or not</option>
-                <option>After 24 hours, read or not</option>
-                <option>After 7 days, read or not</option>
+                <option value="604800">The moment it's read</option>
+                <option value="3600">After 1 hour, read or not</option>
+                <option value="86400">After 24 hours, read or not</option>
+                <option value="604800">After 7 days, read or not</option>
               </select>
             </div>
           </div>
@@ -123,20 +119,10 @@ STRIPE_SECRET_KEY="sk_live_•••••••••"'></textarea>
             <input type="password" id="passphrase" placeholder="Send this separately" autocomplete="off">
           </div>
 
-          <div class="opt">
-            <label for="notify">Email me when it's opened <span class="opt-tag">optional</span></label>
-            <input type="email" id="notify" placeholder="dev@company.com" autocomplete="off">
-          </div>
-
           <div class="opt opt-check">
-            <label class="check">
-              <input type="checkbox" id="botdefense" checked>
-              <span class="check-box" aria-hidden="true"></span>
-              <span class="check-text">
-                Require a human click
-                <em>Slack, Discord and Teams generate link previews. Without this, a preview bot opens the note before your teammate does.</em>
-              </span>
-            </label>
+            <span class="check-text">Human confirmation is always required
+              <em>Slack, Discord and Teams generate link previews. Preview requests can inspect availability but cannot consume the encrypted payload.</em>
+            </span>
           </div>
         </fieldset>
 
@@ -145,7 +131,7 @@ STRIPE_SECRET_KEY="sk_live_•••••••••"'></textarea>
 
       <!-- sealed result -->
       <div class="result" id="result" hidden>
-        <p class="result-label">Prototype link — not shareable</p>
+        <p class="result-label">Encrypted one-time link</p>
         <div class="linkrow">
           <p class="link" id="link"></p>
           <button class="btn-copy" id="copy" type="button">Copy link</button>
@@ -155,9 +141,8 @@ STRIPE_SECRET_KEY="sk_live_•••••••••"'></textarea>
         <div class="warn">
           <p class="warn-head">The key lives after the <code>#</code></p>
           <p>
-            This example demonstrates where a future decryption key would live. The current
-            build has no delivery backend, so this link will not open on another device.
-            Never paste a real credential into a development prototype.
+            The fragment contains the decryption key. Browsers do not send URL fragments
+            in HTTP requests, so the server receives the secret ID but never this key.
           </p>
         </div>
 
@@ -176,8 +161,8 @@ STRIPE_SECRET_KEY="sk_live_•••••••••"'></textarea>
   <section class="section recipient" id="recipient">
     <div class="shell">
       <div class="rec-head">
-        <h2 class="h2">What your teammate opens</h2>
-        <p class="rec-sub">One page, one button, no account. Try it — this preview behaves like the real thing.</p>
+        <h2 class="h2" id="recipient-title">What your teammate opens</h2>
+        <p class="rec-sub" id="recipient-subtitle">One page, one button, no account. A shared link opens this confirmation gate.</p>
       </div>
 
       <div class="rec-card" id="reccard">
@@ -189,22 +174,25 @@ STRIPE_SECRET_KEY="sk_live_•••••••••"'></textarea>
         </span>
 
         <div class="rec-state" id="rec-closed">
-          <p class="rec-kicker">Privacy Lock</p>
-          <p class="rec-line">Someone sent you a secret. Opening it destroys it.</p>
-          <button class="btn-reveal" id="reveal" type="button">Open the note</button>
+          <p class="rec-kicker">Secretshare</p>
+          <p class="rec-line" id="rec-line">Open a generated link to receive an encrypted secret.</p>
+          <label class="recipient-passphrase" id="recipient-passphrase" hidden>Passphrase
+            <input type="password" id="recipient-passphrase-input" autocomplete="off" placeholder="Enter the separately shared passphrase">
+          </label>
+          <button class="btn-reveal" id="reveal" type="button">Open and destroy</button>
+          <p class="rec-foot" id="recipient-status" role="status" aria-live="polite"></p>
           <p class="rec-foot">A bot preview can't press this.</p>
         </div>
 
         <div class="rec-state is-hidden" id="rec-open" hidden>
           <p class="rec-kicker">Read it now — this page won't load again</p>
           <pre class="rec-secret" id="rec-secret"></pre>
-          <button class="btn-plain btn-plain-light" id="rewind" type="button">Reset the preview</button>
+          <a class="download-secret" id="download-secret" hidden>Download encrypted file</a>
         </div>
 
         <div class="rec-state is-hidden" id="rec-gone" hidden>
           <p class="rec-kicker rec-kicker-void">Wiped</p>
-          <p class="rec-line">This note was opened and deleted. There's no copy left, here or anywhere.</p>
-          <button class="btn-plain btn-plain-light" id="rewind2" type="button">Reset the preview</button>
+          <p class="rec-line" id="gone-message">This secret was opened, expired, or does not exist.</p>
         </div>
       </div>
     </div>
@@ -213,36 +201,36 @@ STRIPE_SECRET_KEY="sk_live_•••••••••"'></textarea>
   <!-- ── SPEC SHEET ──────────────────────────────────────────── -->
   <section class="section spec" id="spec">
     <div class="shell">
-      <h2 class="h2">How the production design will work</h2>
+      <h2 class="h2">How the production design works</h2>
       <dl class="spec-list">
         <div class="spec-row">
           <dt>Encryption</dt>
           <dd>
-            <p>The planned production service will generate a key in the browser and encrypt with AES-GCM before sending ciphertext. This development build demonstrates the interface only; its encryption and storage backend have not been implemented.</p>
+            <p>The browser generates a 256-bit key and encrypts text or file bytes with authenticated AES-GCM before sending ciphertext.</p>
           </dd>
         </div>
         <div class="spec-row">
           <dt>The key</dt>
           <dd>
-            <p>The planned link will place the key after <code>#</code>. Browsers do not include URL fragments in HTTP requests, allowing a future service to keep the key separate from the stored ciphertext.</p>
+            <p>The link places the key after <code>#</code>. Browsers do not include URL fragments in HTTP requests, keeping the key separate from stored ciphertext.</p>
           </dd>
         </div>
         <div class="spec-row">
           <dt>Bot defense</dt>
           <dd>
-            <p>The planned service will use a human-confirmation gate because chat applications often fetch links to generate previews. Bot detection and consumption controls are not active in this prototype.</p>
+            <p>A non-consuming landing request protects secrets from chat preview fetches. Only an explicit POST from the Open and destroy button consumes a secret.</p>
           </dd>
         </div>
         <div class="spec-row">
           <dt>Files</dt>
           <dd>
-            <p>The interface accepts a local file selection for demonstration. It does not read, encrypt, upload, or deliver that file in the current build.</p>
+            <p>Files up to 5 MB are read and encrypted locally. Their name, media type, and contents are all inside the encrypted payload.</p>
           </dd>
         </div>
         <div class="spec-row">
           <dt>Deletion</dt>
           <dd>
-            <p>Production deletion semantics will require backend implementation and independent testing. The current recipient preview resets locally and does not represent a stored database row.</p>
+            <p>The backend claims a stored record with an atomic rename before returning it, so concurrent opens cannot both retrieve the same ciphertext. Expired records cannot be consumed.</p>
           </dd>
         </div>
       </dl>
@@ -260,18 +248,18 @@ STRIPE_SECRET_KEY="sk_live_•••••••••"'></textarea>
 
 <footer class="footer">
   <div class="shell footer-inner">
-    <p class="footer-brand">Privacy Lock</p>
+    <p class="footer-brand">Secretshare</p>
     <nav class="footer-nav" aria-label="Footer">
       <a href="#spec">How it works</a>
       <a href="#compose">Send a secret</a>
-      <a href="resources.html">Security guides</a>
-      <a href="privacy.html">Privacy &amp; cookies</a>
-      <a href="security.html">Security</a>
-      <a href="api.html">API</a>
-      <a href="status.html">Status</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-      <a href="terms.html">Terms</a>
+      <a href="/resources.html">Security guides</a>
+      <a href="/privacy.html">Privacy &amp; cookies</a>
+      <a href="/security.html">Security</a>
+      <a href="/api.html">API</a>
+      <a href="/status.html">Status</a>
+      <a href="/about.html">About</a>
+      <a href="/contact.html">Contact</a>
+      <a href="/terms.html">Terms</a>
     </nav>
     <p class="footer-note">Built for developers, agencies and teams who share secrets and would rather not keep them.</p>
   </div>
@@ -280,7 +268,7 @@ STRIPE_SECRET_KEY="sk_live_•••••••••"'></textarea>
 <aside class="cookie-banner" id="cookie-banner" aria-labelledby="cookie-title" aria-describedby="cookie-copy" hidden>
   <div class="cookie-copy">
     <p class="cookie-kicker" id="cookie-title">Privacy preference</p>
-    <p id="cookie-copy">We don’t use advertising or analytics cookies. We only save your choice on this device so this notice stays dismissed. <a href="privacy.html#cookies">Read our cookie policy</a>.</p>
+    <p id="cookie-copy">We don’t use advertising or analytics cookies. We only save your choice on this device so this notice stays dismissed. <a href="/privacy.html#cookies">Read our cookie policy</a>.</p>
   </div>
   <div class="cookie-actions">
     <button class="cookie-button cookie-button-secondary" type="button" data-cookie-choice="declined">Decline</button>
@@ -288,7 +276,7 @@ STRIPE_SECRET_KEY="sk_live_•••••••••"'></textarea>
   </div>
 </aside>
 
-<script src="app.js"></script>
-<script src="cookies.js"></script>
+<script src="/app.js"></script>
+<script src="/cookies.js"></script>
 </body>
 </html>
