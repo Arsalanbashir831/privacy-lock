@@ -26,11 +26,6 @@ Use HTTPS in production; Web Crypto is restricted to secure contexts outside loc
 
 ### CI/CD
 
-Pushes to `main` are tested and deployed by `.github/workflows/deploy.yml`. Configure the GitHub `production` environment with these repository secrets:
-
-- `DEPLOY_HOST`: the server hostname or IP address
-- `DEPLOY_USER`: an SSH user with access to Docker
-- `DEPLOY_PATH`: the absolute deployment directory
-- `DEPLOY_SSH_KEY`: the corresponding private SSH key
+Pushes to `main` are tested and deployed by `.github/workflows/deploy.yml`. Configure the GitHub `production` environment with one repository secret, `DEPLOY_SSH_KEY`, containing the private key for the dedicated `secretshare-deploy` account. The public server address, user, and deployment path are declared in the workflow.
 
 The workflow preserves the named Docker volume containing encrypted secrets, deploys one application container, and verifies `/healthz` after every release. `ops/nginx-secretshare.conf` is the Nginx reverse-proxy configuration used for the production domain.

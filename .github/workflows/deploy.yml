@@ -8,6 +8,11 @@ on:
 permissions:
   contents: read
 
+env:
+  DEPLOY_HOST: 72.60.196.229
+  DEPLOY_USER: secretshare-deploy
+  DEPLOY_PATH: /var/www/secretshare/privacy-lock
+
 concurrency:
   group: secretshare-production
   cancel-in-progress: false
@@ -46,7 +51,6 @@ jobs:
       - uses: actions/checkout@v6
       - name: Configure SSH
         env:
-          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
           DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
         run: |
           install -m 700 -d ~/.ssh
@@ -54,20 +58,12 @@ jobs:
           chmod 600 ~/.ssh/deploy_key
           ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts
       - name: Upload release
-        env:
-          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
-          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
-          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
         run: |
           rsync -az --delete \
             --exclude '.data/' --exclude '.git/' \
             -e 'ssh -i ~/.ssh/deploy_key' \
             ./ "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/"
       - name: Start and verify release
-        env:
-          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
-          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
-          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
         run: |
           ssh -i ~/.ssh/deploy_key "$DEPLOY_USER@$DEPLOY_HOST" \
             "cd '$DEPLOY_PATH' && docker compose up -d --build --remove-orphans && curl --fail --retry 12 --retry-delay 2 http://127.0.0.1:3010/healthz"
