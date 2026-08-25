@@ -29,6 +29,7 @@ export const PUBLIC_FILES = new Set([
   "assets/secretsharelogo-favicon.png",
   "app.js",
   "cookies.js",
+  "sw.js",
   "styles.css",
   "robots.txt",
   "sitemap.xml",

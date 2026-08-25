@@ -109,6 +109,8 @@ test("the static server allowlist exposes only intentional public files", () => 
     assert.ok(PUBLIC_FILES.has(file), `clean route target must be allowlisted: ${file}`);
   }
 
+  assert.equal(isPublicFile("sw.js"), true, "service worker file should be public");
+
   for (const file of [
     "server.mjs",
     "public-files.mjs",
