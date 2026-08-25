@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-# Add an absolute Sitemap URL after the production domain is configured.
+Sitemap: https://secretshare.dev/sitemap.xml

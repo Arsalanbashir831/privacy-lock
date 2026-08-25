@@ -16,9 +16,9 @@
   --rule-soft:  rgba(20, 22, 26, .09);
   --tint:       rgba(30, 58, 85, .13);
 
-  --display: "Archivo", system-ui, sans-serif;
-  --body:    "Instrument Sans", system-ui, sans-serif;
-  --mono:    "Azeret Mono", ui-monospace, monospace;
+  --display: Arial, Helvetica, system-ui, sans-serif;
+  --body:    Arial, Helvetica, system-ui, sans-serif;
+  --mono:    "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 
   --shell: 1120px;
   --pad: clamp(20px, 5vw, 48px);
@@ -101,6 +101,7 @@ code{ font-family: var(--mono); font-size: .88em; background: rgba(30,58,85,.09)
   padding-block: 4px; border-bottom: 1px solid transparent;
 }
 .topnav a:hover{ color: var(--ink); border-bottom-color: var(--ink); }
+.menu-button{ display:none; appearance:none; border:1px solid var(--rule); background:transparent; color:var(--ink); padding:8px 11px; font:600 12px var(--mono); text-transform:uppercase; letter-spacing:.08em; cursor:pointer; }
 .topbar-status{ margin:0; color: var(--seal); display:flex; align-items:center; gap:8px; }
 .dot{ width:6px; height:6px; border-radius:50%; background: var(--seal); }
 .dev-notice{ border-bottom:1px solid rgba(178,58,46,.35); background:rgba(178,58,46,.09); padding-block:10px; font-size:13.5px; }
@@ -553,6 +554,7 @@ code{ font-family: var(--mono); font-size: .88em; background: rgba(30,58,85,.09)
 .trust-row dd{ margin:0; color:#2C3037; }
 .status-pill{ display:inline-flex; align-items:center; gap:8px; color:var(--seal); font:600 12px var(--mono); text-transform:uppercase; letter-spacing:.08em; }
 .status-pill::before{ content:""; width:8px; height:8px; border-radius:50%; background:#A66A25; }
+.status-pill-live::before{ background:#2E7D4D; }
 
 .cookie-banner{
   position:fixed; z-index:50; left:clamp(12px, 3vw, 28px); right:clamp(12px, 3vw, 28px); bottom:clamp(12px, 3vw, 28px);
@@ -583,8 +585,13 @@ code{ font-family: var(--mono); font-size: .88em; background: rgba(30,58,85,.09)
   .hero-title{
     font-size: clamp(26px, 8vw, 48px);
   }
-  .topnav{ display:none; }
-  .topbar-status{ margin-left:auto; }
+  .topbar-inner{ position:relative; gap:12px; }
+  .menu-button{ display:block; margin-left:auto; }
+  .topnav{ display:flex; margin-left:auto; max-width:65vw; overflow-x:auto; }
+  .has-menu .topnav{ display:none; position:absolute; top:calc(100% + 1px); left:var(--pad); right:var(--pad); z-index:20; max-width:none; padding:12px; background:var(--paper-hi); border:1px solid var(--rule); box-shadow:4px 4px 0 rgba(20,22,26,.1); }
+  .has-menu .topnav.is-open{ display:grid; gap:4px; }
+  .topnav a{ padding:10px; }
+  .topbar-status{ display:none; }
   .stamp{ top: auto; bottom: 12px; right: 12px; }
   .btn-copy{ width:100%; padding-block:14px; }
   .policy-layout{ grid-template-columns:1fr; }

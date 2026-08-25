@@ -6,14 +6,14 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>About — SecretShare</title>
     <meta name="description"
-        content="Why SecretShare is exploring safer, simpler ways to hand off sensitive credentials.">
-    <link rel="stylesheet" href="styles.css">
-</head>
+        content="Who builds and reviews SecretShare, how its encrypted one-time delivery works, and the principles behind its security guides.">
+    <link rel="canonical" href="https://secretshare.dev/about.html"><meta property="og:title" content="About — SecretShare"><meta property="og:description" content="SecretShare"><meta property="og:type" content="website"><meta property="og:url" content="https://secretshare.dev/about.html">
+    <link rel="stylesheet" href="styles.css?v=20260824-5">
+<link rel="icon" type="image/png" href="assets/secretshare-transparent.png"></head>
 
 <body>
     <header class="topbar">
-        <div class="shell topbar-inner"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"><img src="assets/secretshare-transparent.png" alt=""></span><span class="brand-name">Privacy
-                    Lock</span></a>
+        <div class="shell topbar-inner"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"><img src="assets/secretshare-transparent.png" alt="" width="34" height="34"></span><span class="brand-name">SecretShare</span></a>
             <nav class="topnav"><a href="resources.html">Guides</a><a href="security.html">Security</a><a
                     href="contact.html">Contact</a></nav>
         </div>
@@ -23,8 +23,7 @@
             <div class="shell">
                 <p class="eyebrow">About the project</p>
                 <h1 class="content-title">A smaller footprint for shared secrets.</h1>
-                <p class="content-lede">SecretShare is an early-stage prototype exploring one-time delivery without
-                    turning a temporary handoff into a permanent chat record.</p>
+                <p class="content-lede">SecretShare provides encrypted, expiring, one-time delivery without turning a temporary handoff into a permanent chat record.</p>
             </div>
         </section>
         <section class="section">
@@ -33,18 +32,18 @@
                 <p>Teams regularly paste API keys, recovery codes, database credentials, and configuration files into
                     channels built for permanent conversation. Those messages become searchable, replicated, backed up,
                     and available to more people than the original exchange required.</p>
-                <h2>The direction</h2>
-                <p>The intended design encrypts content in the sender’s browser, stores only ciphertext, keeps the
-                    decryption key in a URL fragment, and removes stored material after its first authorized read or an
-                    expiry deadline. That architecture is a goal—not a description of the current implementation.</p>
+                <h2>How the service works</h2>
+                <p>The sender’s browser encrypts content with AES-GCM before upload. The server stores ciphertext, an expiry time, and the information required to return that ciphertext once. The decryption key remains in the URL fragment, which browsers do not send in ordinary HTTP requests. A recipient confirms the open explicitly; the server then atomically claims and deletes the stored record.</p>
                 <div class="callout">
-                    <p><strong>Current state:</strong> the public interface is a development prototype. It does not
-                        provide working delivery, encryption, accounts, or a production API.</p>
+                    <p><strong>Scope:</strong> SecretShare has no user accounts and is intended for temporary handoffs. It does not replace a password manager, workload identity, access review, or credential rotation.</p>
                 </div>
+                <h2>Who writes the guides</h2>
+                <p>The SecretShare Editorial Team maintains the learning center. Articles are reviewed against the implemented product behavior and established defensive-security practices. Each guide carries a review date and is updated when its advice, examples, or supporting standards change.</p>
                 <h2>Publishing principles</h2>
                 <p>The learning center is written to stand on its own. Its guidance does not require SecretShare and
-                    distinguishes general security practice from product plans. When claims depend on implementation,
-                    the status and security pages identify what has and has not been built.</p>
+                    distinguishes general security practice from product behavior. We prioritize defensive use, precise limitations, reproducible checks, and corrections when a published claim no longer matches the implementation.</p>
+                <h2>Editorial contact</h2>
+                <p>Questions, corrections, and source suggestions can be sent to <a href="mailto:hello@secretshare.dev">hello@secretshare.dev</a>. Security vulnerabilities should be reported privately through the channel listed on the <a href="security.html">security page</a>.</p>
             </div>
         </section>
     </main>

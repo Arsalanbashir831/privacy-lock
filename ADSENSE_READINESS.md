@@ -1,31 +1,35 @@
-# AdSense launch checklist
+# Monetization readiness
 
-The repository is intentionally in development mode. It contains no AdSense publisher ID, ad tag, ad request, advertising cookie, or production-domain metadata.
+Reviewed 24 August 2026 against the implemented site and current Google publisher guidance.
 
-## Already implemented
+## Completed before advertising integration
 
-- The homepage identifies the secret-sharing interface as a non-operational prototype.
-- Product, security, API, and status claims distinguish implemented behavior from planned architecture.
-- Placeholder navigation links were replaced with real pages.
-- About, Contact, Terms, Security, Status, API, Privacy, and Resources pages exist.
-- The learning center contains ten original articles.
-- The privacy policy explicitly says advertising is not configured.
-- Editorial content is separated from the composer, recipient preview, and legal pages.
+- Product, security, status, terms, and privacy claims match the working encrypted-delivery flow.
+- About and guide pages identify the SecretShare Editorial Team and review dates.
+- Ten original defensive-security guides have accurate reading times, article structured data, and authoritative review references.
+- Desktop, mobile, JavaScript, and no-JavaScript navigation paths remain available.
+- Every public HTML page has a title, description, canonical URL, Open Graph metadata, favicon, H1, and language declaration.
+- `robots.txt` references an absolute sitemap and `sitemap.xml` lists editorial and trust pages.
+- Contact roles use the production `secretshare.dev` domain.
+- Runtime fonts use local system stacks; the site does not contact a third-party font provider.
+- The privacy policy describes ciphertext storage, expiry, retrieval, local preferences, and future advertising boundaries.
 
-## Complete only after a domain and AdSense account exist
+## Advertising placement boundary
 
-1. Publish on the final HTTPS domain and verify every page is publicly crawlable.
-2. Replace reserved `@privacylock.io` contact addresses if that domain is not selected, and verify that the mailboxes receive messages.
-3. Add a canonical URL and Open Graph URL to each public page using the final origin.
-4. Add the AdSense ownership meta tag or script supplied by Google. Never invent a `ca-pub-` identifier.
-5. Create `/ads.txt` using the exact publisher ID shown in AdSense, for example:
-   `google.com, pub-REPLACE_WITH_REAL_ID, DIRECT, f08c47fec0942fa0`
-6. Enable Google Privacy & Messaging or another Google-certified CMP for regions where it is required. The current development banner is not a TCF CMP.
-7. Update `privacy.html` with the actual advertising vendors, purposes, retention, user controls, and final data-controller contact.
-8. Add ad code only to editorial guide pages. Do not place it on `index.html`, `privacy.html`, `terms.html`, the prototype composer/recipient experience, status pages, or future secret-reading routes.
-9. Add a persistent “Privacy and cookie settings” revocation control supplied by the chosen CMP.
-10. Generate `sitemap.xml` and add its final absolute URL to `robots.txt`.
-11. Verify the site in Search Console, test Core Web Vitals, and confirm no broken links or inaccessible pages.
-12. Request AdSense review only when the live site is complete and receiving genuine traffic.
+Advertising may be added only to manually reviewed editorial pages under `/guides/` and, if useful, the resources index. Never place advertising on:
 
-Ad placement containers are deliberately absent. They should be introduced only after the publisher ID, CMP configuration, and final domain are known.
+- the homepage composer;
+- `/s/{id}` recipient or secret states;
+- privacy, terms, contact, security, API, status, error, or other non-editorial screens;
+- pages containing unreviewed user-provided content or private communications.
+
+## Complete when AdSense is connected
+
+1. Verify that `hello@secretshare.dev`, `privacy@secretshare.dev`, and `security@secretshare.dev` receive mail.
+2. Add the exact AdSense ownership code supplied by Google.
+3. Publish `ads.txt` using the exact assigned publisher ID.
+4. Configure a Google-certified CMP where required and update the privacy policy with actual vendors and controls.
+5. Keep ad quantity below editorial content and avoid placements that resemble navigation or download controls.
+6. Verify Search Console indexing, Core Web Vitals, live mobile navigation, and genuine traffic quality before requesting review.
+
+Approval remains Google’s decision and cannot be guaranteed by a repository audit.

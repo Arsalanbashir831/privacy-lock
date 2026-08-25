@@ -1,4 +1,27 @@
 (function () {
+  const inGuides = window.location.pathname.includes("/guides/");
+  const prefix = inGuides ? "../" : "";
+  const topbar = document.querySelector(".topbar-inner");
+  const navigation = topbar?.querySelector(".topnav");
+  if (topbar && navigation) {
+    document.body.classList.add("has-menu");
+    navigation.setAttribute("aria-label", "Main");
+    navigation.innerHTML = `<a href="${prefix}index.html">Home</a><a href="${prefix}index.html#compose">Send a secret</a><a href="${prefix}resources.html">Guides</a><a href="${prefix}security.html">Security</a><a href="${prefix}about.html">About</a><a href="${prefix}contact.html">Contact</a>`;
+    const menuButton = document.createElement("button");
+    menuButton.className = "menu-button";
+    menuButton.type = "button";
+    menuButton.setAttribute("aria-expanded", "false");
+    menuButton.setAttribute("aria-label", "Open navigation");
+    menuButton.textContent = "Menu";
+    menuButton.addEventListener("click", () => {
+      const open = navigation.classList.toggle("is-open");
+      menuButton.setAttribute("aria-expanded", String(open));
+      menuButton.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
+      menuButton.textContent = open ? "Close" : "Menu";
+    });
+    topbar.insertBefore(menuButton, navigation);
+  }
+
   let banner = document.getElementById("cookie-banner");
   if (!banner) {
     banner = document.createElement("aside");
@@ -7,7 +30,7 @@
     banner.hidden = true;
     banner.setAttribute("aria-labelledby", "cookie-title");
     banner.setAttribute("aria-describedby", "cookie-copy");
-    const privacyPath = window.location.pathname.includes("/guides/") ? "../privacy.html#cookies" : "privacy.html#cookies";
+    const privacyPath = `${prefix}privacy.html#cookies`;
     banner.innerHTML = `<div class="cookie-copy"><p class="cookie-kicker" id="cookie-title">Privacy preference</p><p id="cookie-copy">We don’t use advertising or analytics cookies. We only save your choice on this device so this notice stays dismissed. <a href="${privacyPath}">Read our cookie policy</a>.</p></div><div class="cookie-actions"><button class="cookie-button cookie-button-secondary" type="button" data-cookie-choice="declined">Decline</button><button class="cookie-button" type="button" data-cookie-choice="accepted">Accept</button></div>`;
     document.body.appendChild(banner);
   }

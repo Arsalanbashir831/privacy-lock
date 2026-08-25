@@ -5,11 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Privacy &amp; Cookies — SecretShare</title>
 <meta name="description" content="How SecretShare handles personal data, encrypted content, cookies, retention, and your privacy choices.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62.5..125,400..900&family=Azeret+Mono:wght@400;500;600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
-</head>
+<link rel="canonical" href="https://secretshare.dev/privacy.html"><meta property="og:title" content="Privacy &amp;amp; Cookies — SecretShare"><meta property="og:description" content="How SecretShare handles personal data, encrypted content, cookies, retention, and your privacy choices."><meta property="og:type" content="website"><meta property="og:url" content="https://secretshare.dev/privacy.html">
+<link rel="stylesheet" href="styles.css?v=20260824-5">
+<link rel="icon" type="image/png" href="assets/secretshare-transparent.png"></head>
 <body>
 <a class="skip" href="#policy">Skip to the privacy policy</a>
 
@@ -17,9 +15,9 @@
   <div class="shell topbar-inner">
     <a class="brand" href="index.html">
       <span class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="10.5" width="16" height="10" rx="1"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/><path d="M12 14v3.2"/></svg>
+        <img src="assets/secretshare-transparent.png" alt="" width="34" height="34">
       </span>
-      <span class="brand-mark" aria-hidden="true"><img src="assets/secretshare-transparent.png" alt=""></span><span class="brand-name">SecretShare</span>
+      <span class="brand-name">SecretShare</span>
     </a>
     <nav class="topnav" aria-label="Main"><a href="index.html#compose">Send a secret</a><a href="index.html#spec">How it works</a></nav>
     <p class="topbar-status"><span class="dot" aria-hidden="true"></span>Privacy by design</p>
@@ -45,8 +43,8 @@
         <section id="overview">
           <p class="policy-effective">Effective: 24 August 2026</p>
           <h2>Overview</h2>
-          <p>This policy applies to the SecretShare website. The current public site is a front-end demonstration: it does not transmit, store, or deliver the secret text or files entered into the interface.</p>
-          <p>If the service later adds accounts, a backend, analytics, payments, or production secret delivery, this policy will be updated before those features process personal data.</p>
+          <p>This policy applies to the SecretShare website and one-time secret-delivery service. SecretShare encrypts content in the sender’s browser, receives and temporarily stores ciphertext, and returns that ciphertext once to a recipient who possesses the complete link.</p>
+          <p>The service does not require an account. This policy will be updated before accounts, payments, analytics, or materially different processing are introduced.</p>
         </section>
 
         <section id="data">
@@ -57,8 +55,8 @@
 
         <section id="secrets">
           <h2>Secret text and files</h2>
-          <p>In the current demonstration, content entered into the composer remains in your browser. Clicking “Seal and create link” creates a visual example only; it does not upload the content or create a working share link.</p>
-          <p>Do not rely on this demonstration to deliver real credentials or confidential files.</p>
+          <p>Text and files are encrypted in your browser before upload. The server receives ciphertext, the encryption nonce, a passphrase-derivation salt, an expiry time, and a Boolean value indicating whether a separate passphrase is required. The server does not receive the browser-generated master key stored after the URL <code>#</code>.</p>
+          <p>Encrypted records are deleted after the first confirmed retrieval or rejected after expiry. Recipients can still copy or retain decrypted content, and a compromised browser or delivered script could expose it; one-time delivery cannot control the recipient’s device.</p>
         </section>
 
         <section id="cookies">
@@ -70,22 +68,21 @@
 
         <section id="advertising">
           <h2>Advertising status</h2>
-          <p>SecretShare does not currently load Google AdSense, request advertisements, set advertising cookies, or have a Google publisher ID. The development preference banner is not an advertising consent platform.</p>
+          <p>SecretShare does not currently load Google AdSense, request advertisements, set advertising cookies, or have a Google publisher ID. The current preference banner is not an advertising consent platform.</p>
           <p>Before advertising is enabled, this policy will identify Google and applicable advertising providers, explain their use of cookies, local storage, IP addresses and other identifiers, and provide the controls required for the visitor’s region. Traffic from the EEA, UK, and Switzerland will use a Google-certified consent management platform where required. Advertising code will not be placed on the secret composer, recipient view, legal pages, or other non-editorial screens.</p>
         </section>
 
         <section id="sharing">
           <h2>Service providers and transfers</h2>
           <ul>
-            <li><strong>Development hosting</strong> may change before launch. When GitHub Pages is used, GitHub may process request logs under its own privacy terms.</li>
-            <li><strong>Google Fonts</strong> supplies the site’s typefaces. Your browser may connect to Google and disclose technical request information, including your IP address.</li>
+            <li><strong>Hosting and network providers</strong> process requests and security logs needed to operate <code>secretshare.dev</code>.</li>
           </ul>
           <p>We do not sell personal information or share it for cross-context behavioural advertising.</p>
         </section>
 
         <section id="retention">
           <h2>Retention and security</h2>
-          <p>The cookie preference stays on your device until you clear browser data or reset it. Infrastructure logs are retained according to the relevant hosting provider’s operational and security policies. Contact messages are kept only as long as needed to respond and meet legitimate legal or security requirements.</p>
+          <p>The cookie preference stays on your device until you clear browser data or reset it. Encrypted secrets remain available until first retrieval or the selected expiry, up to seven days. Infrastructure logs follow the hosting provider’s operational and security retention. Contact messages are kept only as long as needed to respond and meet legitimate legal or security requirements.</p>
           <p>No internet service can guarantee absolute security, but we aim to minimise collection and limit access to information that is genuinely needed.</p>
         </section>
 
@@ -97,7 +94,7 @@
 
         <section id="contact">
           <h2>Contact and policy updates</h2>
-          <p>For privacy questions or requests, email <a href="mailto:privacy@privacylock.io">privacy@privacylock.io</a>. If this policy changes materially, the effective date above will be updated and a prominent notice will be posted when appropriate.</p>
+          <p>For privacy questions or requests, email <a href="mailto:privacy@secretshare.dev">privacy@secretshare.dev</a>. If this policy changes materially, the effective date above will be updated and a prominent notice will be posted when appropriate.</p>
         </section>
       </article>
     </div>
