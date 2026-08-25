@@ -34,7 +34,8 @@ export const PUBLIC_FILES = new Set([
   "robots.txt",
   "sitemap.xml",
   "ads.txt",
-  "llms.txt"
+  "llms.txt",
+  "sw2.js"
 ]);
 
 export const PUBLIC_ROUTES = new Map([
