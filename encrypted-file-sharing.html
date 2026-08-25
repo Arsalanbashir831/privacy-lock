@@ -38,7 +38,7 @@
                 <p class="breadcrumbs"><a href="/">Home</a> / Encrypted file sharing</p>
                 <p class="eyebrow">Encrypted file sharing &nbsp;/&nbsp; Up to 150 MB</p>
                 <h1 class="content-title">Encrypted file sharing with a one-time link.</h1>
-                <p class="content-lede">Send a configuration file, SSH key, JSON document, PDF, or another file
+                <p class="content-lede">Send a Word document, Excel spreadsheet, PDF, configuration file, SSH key, or another file
                     without placing readable content on the SecretShare server. Encryption happens in your browser
                     before upload, and the recipient retrieves the encrypted payload once.</p>
             </div>
@@ -77,6 +77,7 @@
                 </div>
                 <h2>Good uses for one-time encrypted file sharing</h2>
                 <ul>
+                    <li>Sharing a Word document (<code>.doc</code> or <code>.docx</code>) or Excel spreadsheet (<code>.xls</code> or <code>.xlsx</code>) through a one-time download.</li>
                     <li>Delivering a temporary <code>.env</code> file to a contractor before rotating its values.</li>
                     <li>Passing a bootstrap SSH key during a controlled onboarding process.</li>
                     <li>Sending a small certificate bundle, recovery-code export, or private configuration file.</li>
@@ -101,6 +102,10 @@
                         <summary>What is the maximum file size?</summary>
                         <p>150 MB. The browser reads and encrypts the whole file, so large transfers require enough
                             device memory and may take longer on mobile or slower connections.</p>
+                    </details>
+                    <details>
+                        <summary>Can I upload Word and Excel files?</summary>
+                        <p>Yes. SecretShare accepts Word files such as <code>.doc</code> and <code>.docx</code>, Excel files such as <code>.xls</code> and <code>.xlsx</code>, and other file types up to 150 MB. It preserves the filename and media type inside the encrypted payload.</p>
                     </details>
                     <details>
                         <summary>Does SecretShare store the filename?</summary>

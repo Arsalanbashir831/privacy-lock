@@ -94,6 +94,8 @@ test("the 150 MB file limit is consistent across browser, server, and proxy", ()
   assert.match(server, /url\.pathname === "\/api\/secrets\/binary"/);
   assert.match(nginx, /client_max_body_size 151m;/);
   assert.match(readFileSync("encrypted-file-sharing.html", "utf8"), /files up to 150 MB/i);
+  assert.match(readFileSync("encrypted-file-sharing.html", "utf8"), /Can I upload Word and Excel files\?/);
+  assert.doesNotMatch(app, /accept\s*=/, "the file picker should not restrict supported file types");
 });
 
 test("the static server allowlist exposes only intentional public files", () => {

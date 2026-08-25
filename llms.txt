@@ -7,7 +7,7 @@ Canonical origin: https://secretshare.dev/
 
 ## Verified capabilities
 
-- Encrypts secret text or one file up to 150 MB in the sender's browser with AES-256-GCM.
+- Encrypts secret text or one file of any type up to 150 MB in the sender's browser with AES-256-GCM, including Word documents and Excel spreadsheets.
 - Places the random decryption key in the URL fragment; browsers do not include URL fragments in ordinary HTTP requests.
 - Stores ciphertext plus the metadata required for expiration and one-time retrieval.
 - Requires explicit recipient confirmation before atomically claiming and returning the encrypted record once.
