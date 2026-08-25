@@ -1,6 +1,29 @@
-# Secretshare
+# SecretShare
 
-Secretshare encrypts text and files in the browser and stores only ciphertext on the server. A generated URL has the form `/s/{id}#key`; URL fragments are not sent in HTTP requests, so the server never receives the encryption key.
+**[Use SecretShare at secretshare.dev](https://secretshare.dev/)**
+
+SecretShare is a no-account web application for [secure password sharing](https://secretshare.dev/) and [encrypted file sharing](https://secretshare.dev/encrypted-file-sharing) through one-time, expiring links. It supports text, Word documents, Excel spreadsheets, PDFs, configuration files, and other files up to 150 MB.
+
+SecretShare encrypts content in the browser and stores only ciphertext on the server. A generated URL has the form `/s/{id}#key`; URL fragments are not sent in HTTP requests, so the server never receives the encryption key through the normal request path.
+
+## Live product and documentation
+
+- **[Create an encrypted one-time link](https://secretshare.dev/)**
+- [Encrypted file sharing](https://secretshare.dev/encrypted-file-sharing)
+- [How one-time file downloads work](https://secretshare.dev/one-time-file-download)
+- [Implemented security model](https://secretshare.dev/security.html)
+- [Security learning center](https://secretshare.dev/resources.html)
+- [Compare one-time secret sharing tools](https://secretshare.dev/alternatives)
+
+## Features
+
+- Browser-side AES-256-GCM encryption
+- One confirmed retrieval per link
+- Files of any type up to 150 MB
+- Optional passphrase protection
+- One-hour, 24-hour, or seven-day expiration
+- No sender or recipient account required
+- Human confirmation before consumption to protect against link-preview requests
 
 ## Run locally
 
