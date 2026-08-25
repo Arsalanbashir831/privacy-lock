@@ -19,6 +19,7 @@ test("every public page has discovery and accessibility metadata", () => {
     assert.match(html, /<link rel="canonical" href="https:\/\/secretshare\.dev\//, `${file}: canonical`);
     assert.match(html, /<meta property="og:title"/, `${file}: Open Graph title`);
     assert.match(html, /<meta property="og:url"/, `${file}: Open Graph URL`);
+    assert.match(html, /pagead2\.googlesyndication\.com\/pagead\/js\/adsbygoogle\.js\?client=ca-pub-2654122264996557/, `${file}: AdSense publisher code`);
     assert.match(html, /<h1\b/, `${file}: H1`);
     assert.match(html, /<nav class="topnav"/, `${file}: main navigation`);
   }

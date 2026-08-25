@@ -31,7 +31,7 @@
     banner.setAttribute("aria-labelledby", "cookie-title");
     banner.setAttribute("aria-describedby", "cookie-copy");
     const privacyPath = `${prefix}privacy.html#cookies`;
-    banner.innerHTML = `<div class="cookie-copy"><p class="cookie-kicker" id="cookie-title">Privacy preference</p><p id="cookie-copy">We don’t use advertising or analytics cookies. We only save your choice on this device so this notice stays dismissed. <a href="${privacyPath}">Read our cookie policy</a>.</p></div><div class="cookie-actions"><button class="cookie-button cookie-button-secondary" type="button" data-cookie-choice="declined">Decline</button><button class="cookie-button" type="button" data-cookie-choice="accepted">Accept</button></div>`;
+    banner.innerHTML = `<div class="cookie-copy"><p class="cookie-kicker" id="cookie-title">Advertising notice</p><p id="cookie-copy">AdSense code is installed and Google may use cookies or similar identifiers when advertising is enabled. This notice only remembers its dismissal; regional advertising-consent controls are provided separately. <a href="${privacyPath}">Read our cookie policy</a>.</p></div><div class="cookie-actions"><button class="cookie-button" type="button" data-cookie-choice="dismissed">Dismiss</button></div>`;
     document.body.appendChild(banner);
   }
 

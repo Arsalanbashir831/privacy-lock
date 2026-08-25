@@ -23,13 +23,14 @@ Advertising may be added only to manually reviewed editorial pages under `/guide
 - privacy, terms, contact, security, API, status, error, or other non-editorial screens;
 - pages containing unreviewed user-provided content or private communications.
 
-## Complete when AdSense is connected
+## Publisher connection
 
 1. Verify that `hello@secretshare.dev`, `privacy@secretshare.dev`, and `security@secretshare.dev` receive mail.
-2. Add the exact AdSense ownership code supplied by Google.
+2. The AdSense ownership code for `ca-pub-2654122264996557` is installed across all real HTML pages; the Google verification file remains unchanged.
 3. Publish `ads.txt` using the exact assigned publisher ID.
-4. Configure a Google-certified CMP where required and update the privacy policy with actual vendors and controls.
-5. Keep ad quantity below editorial content and avoid placements that resemble navigation or download controls.
-6. Verify Search Console indexing, Core Web Vitals, live mobile navigation, and genuine traffic quality before requesting review.
+4. Configure a Google-certified CMP where required. The local dismissal notice is not a CMP and does not control advertising consent.
+5. Configure Auto ads URL/page exclusions for `/`, `/s/*`, and all non-editorial pages before ad serving is enabled.
+6. Keep ad quantity below editorial content and avoid placements that resemble navigation or download controls.
+7. Verify Search Console indexing, Core Web Vitals, live mobile navigation, and genuine traffic quality before requesting review.
 
 Approval remains Google’s decision and cannot be guaranteed by a repository audit.
