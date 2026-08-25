@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { dirname, join, normalize } from "node:path";
 import test from "node:test";
+import { isPublicFile, PUBLIC_FILES } from "../public-files.mjs";
 
 const verificationFile = /^google[a-f0-9]+\.html$/;
 const pages = [
@@ -58,4 +59,28 @@ test("robots and sitemap expose the production origin", () => {
   const sitemap = readFileSync("sitemap.xml", "utf8");
   assert.match(sitemap, /<loc>https:\/\/secretshare\.dev\/<\/loc>/);
   assert.match(sitemap, /<loc>https:\/\/secretshare\.dev\/resources\.html<\/loc>/);
+});
+
+test("the static server allowlist exposes only intentional public files", () => {
+  for (const file of PUBLIC_FILES) {
+    assert.ok(existsSync(file), `allowlisted file is missing: ${file}`);
+    assert.equal(isPublicFile(file), true);
+  }
+
+  for (const file of [
+    "server.mjs",
+    "public-files.mjs",
+    "package.json",
+    "README.md",
+    "ADSENSE_READINESS.md",
+    "Dockerfile",
+    "compose.yaml",
+    ".gitignore",
+    ".github/workflows/deploy.yml",
+    "ops/nginx-secretshare.conf",
+    "test/site.test.js",
+    ".data/secrets/example.json"
+  ]) {
+    assert.equal(isPublicFile(file), false, `private file was allowlisted: ${file}`);
+  }
 });

@@ -3,6 +3,7 @@ import { mkdir, open, readFile, rename, unlink } from "node:fs/promises";
 import { dirname, extname, join, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
 import { randomBytes, timingSafeEqual } from "node:crypto";
+import { isPublicFile } from "./public-files.mjs";
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
 const STORE = join(ROOT, ".data", "secrets");
@@ -154,9 +155,10 @@ async function serveStatic(pathname, res) {
   const requested = /^\/s\/[A-Za-z0-9_-]{20,32}$/.test(pathname)
     ? "/index.html"
     : (pathname === "/" ? "/index.html" : pathname);
-  const relative = normalize(decodeURIComponent(requested)).replace(/^(\.\.(\/|\\|$))+/, "");
+  const relative = normalize(decodeURIComponent(requested)).replace(/^[/\\]+/, "");
+  if (!isPublicFile(relative)) return json(res, 404, { error: "Not found" });
   const file = join(ROOT, relative);
-  if (!file.startsWith(ROOT) || !Object.hasOwn(MIME, extname(file))) return json(res, 404, { error: "Not found" });
+  if (!file.startsWith(`${ROOT}/`) || !Object.hasOwn(MIME, extname(file))) return json(res, 404, { error: "Not found" });
   try {
     let content = await readFile(file);
     const extra = {

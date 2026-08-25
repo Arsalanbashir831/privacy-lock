@@ -3,7 +3,10 @@ FROM node:20-alpine
 ENV NODE_ENV=production
 WORKDIR /app
 
-COPY --chown=node:node . .
+COPY --chown=node:node package.json server.mjs public-files.mjs ./
+COPY --chown=node:node *.html *.js *.css *.txt *.xml ./
+COPY --chown=node:node assets ./assets
+COPY --chown=node:node guides ./guides
 RUN mkdir -p /app/.data/secrets && chown -R node:node /app/.data
 
 USER node
