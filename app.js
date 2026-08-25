@@ -1,6 +1,6 @@
 /* Secretshare: encryption and decryption happen only in this browser. */
 const $ = (id) => document.getElementById(id);
-const MAX_FILE_SIZE = 5 * 1024 * 1024;
+const MAX_FILE_SIZE = 150 * 1024 * 1024;
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
 
@@ -55,6 +55,42 @@ async function api(path, options = {}) {
   return data;
 }
 
+async function uploadCiphertext(ciphertext, metadata) {
+  const response = await fetch("/api/secrets/binary", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/octet-stream",
+      "X-Secret-IV": bytesToBase64(metadata.iv),
+      "X-Secret-Salt": bytesToBase64(metadata.salt),
+      "X-Secret-Passphrase": metadata.requiresPassphrase ? "1" : "0",
+      "X-Secret-Expires-At": String(metadata.expiresAt)
+    },
+    body: ciphertext
+  });
+  const data = await response.json().catch(() => ({ error: "Unexpected server response" }));
+  if (!response.ok) throw new Error(data.error || "Upload failed");
+  return data;
+}
+
+async function consumeBinarySecret(id, token) {
+  const response = await fetch(`/api/secrets/${id}/consume`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ consumeToken: token })
+  });
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({ error: "Unexpected server response" }));
+    throw new Error(data.error || "Could not retrieve the encrypted file");
+  }
+  return {
+    version: 2,
+    ciphertext: new Uint8Array(await response.arrayBuffer()),
+    iv: response.headers.get("X-Secret-IV"),
+    salt: response.headers.get("X-Secret-Salt"),
+    requiresPassphrase: response.headers.get("X-Secret-Passphrase") === "1"
+  };
+}
+
 $("serial").textContent = `${randomCode(4)}-${randomCode(4)}`;
 const tabs = [{ tab: $("tab-text"), pane: $("pane-text") }, { tab: $("tab-file"), pane: $("pane-file") }];
 let activeTab = "text";
@@ -100,7 +136,7 @@ $("seal").addEventListener("click", async () => {
     return;
   }
   if (activeTab === "file" && file.size > MAX_FILE_SIZE) {
-    result.hidden = false; status.textContent = "The maximum file size is 5 MB."; return;
+    result.hidden = false; status.textContent = "The maximum file size is 150 MB."; return;
   }
   button.disabled = true;
   button.textContent = "Encrypting…";
@@ -114,12 +150,9 @@ $("seal").addEventListener("click", async () => {
     const meta = activeTab === "file" ? { type: "file", name: file.name, mime: file.type || "application/octet-stream" } : { type: "text" };
     const content = activeTab === "file" ? new Uint8Array(await file.arrayBuffer()) : encoder.encode(text);
     const ciphertext = new Uint8Array(await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, packPayload(meta, content)));
-    const response = await api("/api/secrets", {
-      method: "POST",
-      body: JSON.stringify({
-        ciphertext: bytesToBase64(ciphertext), iv: bytesToBase64(iv), salt: bytesToBase64(salt),
-        requiresPassphrase: Boolean(passphrase), expiresAt: Date.now() + Number($("destroy").value) * 1000
-      })
+    const response = await uploadCiphertext(ciphertext, {
+      iv, salt, requiresPassphrase: Boolean(passphrase),
+      expiresAt: Date.now() + Number($("destroy").value) * 1000
     });
     shareUrl = `${location.origin}/s/${response.id}#${toFragment(masterKey)}`;
     const fragment = document.createElement("span");
@@ -185,6 +218,7 @@ function showState(name) {
 const recipientMatch = location.pathname.match(/^\/s\/([A-Za-z0-9_-]{20,32})$/);
 let claimedSecret = null;
 let consumeToken = "";
+let secretVersion = 1;
 const recipientPassphrase = $("recipient-passphrase");
 const recipientPassphraseInput = $("recipient-passphrase-input");
 if (recipientMatch) {
@@ -193,6 +227,7 @@ if (recipientMatch) {
   $("recipient-subtitle").textContent = "It will be permanently deleted when you open it.";
   api(`/api/secrets/${recipientMatch[1]}`).then((info) => {
     consumeToken = info.consumeToken;
+    secretVersion = info.version || 1;
     $("rec-line").textContent = `Someone sent you an encrypted secret. It expires ${new Date(info.expiresAt).toLocaleString()}.`;
     recipientPassphrase.hidden = !info.requiresPassphrase;
     recipientPassphraseInput.disabled = !info.requiresPassphrase;
@@ -215,12 +250,15 @@ $("reveal").addEventListener("click", async () => {
   try {
     const fragment = location.hash.slice(1);
     if (!fragment) throw new Error("The decryption key is missing from this link");
-    claimedSecret ||= await api(`/api/secrets/${recipientMatch[1]}/consume`, {
-      method: "POST", body: JSON.stringify({ consumeToken })
-    });
+    claimedSecret ||= secretVersion === 2
+      ? await consumeBinarySecret(recipientMatch[1], consumeToken)
+      : await api(`/api/secrets/${recipientMatch[1]}/consume`, {
+          method: "POST", body: JSON.stringify({ consumeToken })
+        });
     const key = await encryptionKey(fromFragment(fragment), passphrase, base64ToBytes(claimedSecret.salt));
     const plaintext = new Uint8Array(await crypto.subtle.decrypt(
-      { name: "AES-GCM", iv: base64ToBytes(claimedSecret.iv) }, key, base64ToBytes(claimedSecret.ciphertext)
+      { name: "AES-GCM", iv: base64ToBytes(claimedSecret.iv) }, key,
+      claimedSecret.version === 2 ? claimedSecret.ciphertext : base64ToBytes(claimedSecret.ciphertext)
     ));
     const { meta, content } = unpackPayload(plaintext);
     history.replaceState(null, "", location.pathname);

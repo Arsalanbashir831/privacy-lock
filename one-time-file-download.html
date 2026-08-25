@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>One-Time File Download &amp; Self-Destructing Links — SecretShare</title>
+    <meta name="description"
+        content="Create a one-time file download or secret link that is consumed after confirmed access, with local encryption and automatic expiration.">
+    <link rel="canonical" href="https://secretshare.dev/one-time-file-download">
+    <meta property="og:title" content="One-Time File Download &amp; Self-Destructing Links — SecretShare">
+    <meta property="og:description"
+        content="Create an encrypted file or secret link that is consumed after confirmed access.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://secretshare.dev/one-time-file-download">
+    <link rel="stylesheet" href="/styles.css?v=20260825-1">
+    <link rel="icon" type="image/png" href="/assets/secretshare-transparent.png">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2654122264996557"
+        crossorigin="anonymous"></script>
+    <script
+        type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"One-time file downloads and self-destructing links","url":"https://secretshare.dev/one-time-file-download","isPartOf":{"@type":"WebSite","name":"SecretShare","url":"https://secretshare.dev/"}}</script>
+</head>
+
+<body>
+    <a class="skip" href="#content">Skip to content</a>
+    <header class="topbar">
+        <div class="shell topbar-inner"><a class="brand" href="/"><span class="brand-mark" aria-hidden="true"><img
+                        src="/assets/secretshare-transparent.png" alt="" width="34" height="34"></span><span
+                    class="brand-name">SecretShare</span></a>
+            <nav class="topnav" aria-label="Main"><a href="/#compose">Send a secret</a><a
+                    href="/resources.html">Guides</a><a href="/security.html">Security</a></nav>
+            <p class="topbar-status"><span class="dot" aria-hidden="true"></span>One open only</p>
+        </div>
+    </header>
+    <main id="content">
+        <section class="section content-hero">
+            <div class="shell">
+                <p class="breadcrumbs"><a href="/">Home</a> / One-time file download</p>
+                <p class="eyebrow">One-time file download &nbsp;/&nbsp; Human-confirmed</p>
+                <h1 class="content-title">Create a one-time download that does not linger.</h1>
+                <p class="content-lede">A SecretShare link allows one confirmed retrieval of encrypted text or a file up
+                    to 150 MB. It is useful when a recipient needs temporary delivery but does not need permanent shared
+                    storage.</p>
+            </div>
+        </section>
+        <section class="section">
+            <article class="shell article-shell article-body">
+                <h2>What “one-time” means in SecretShare</h2>
+                <p>The shared record is not consumed by the first ordinary page request. That distinction matters
+                    because Slack, Discord, Teams, email security scanners, and other services may fetch a URL to create
+                    a preview or assess safety. SecretShare first displays a confirmation page. Only a deliberate “Open
+                    and destroy” request atomically claims the stored record.</p>
+                <p>After that claim, a concurrent or later request cannot retrieve the same ciphertext. The server
+                    returns the encrypted payload to the first confirmed request and removes the claimed record. The
+                    browser then decrypts the content using the key in the URL fragment and, for files, creates a local
+                    download.</p>
+                <h2>Use a one-time link for delivery, not storage</h2>
+                <p>One-time file download links are a good fit for bootstrap credentials, recovery codes, private
+                    configuration, and other handoffs whose usefulness is brief. They are not a substitute for versioned
+                    document storage, a password manager used by a standing team, or a secrets manager used by
+                    applications.</p>
+                <p>One-time access also does not prove who retrieved the content. Anyone who has the complete link—and
+                    the passphrase when one is configured—can attempt to open it. Confirm the recipient before sending,
+                    use a separate channel for an optional passphrase, and rotate credentials when the handoff
+                    completes.</p>
+                <h2>Expiration and failed delivery</h2>
+                <p>Choose one hour, 24 hours, or seven days depending on how quickly the recipient can act. Expired
+                    records cannot be consumed. If the recipient sees that a secret is gone before they retrieve it, do
+                    not resend the same sensitive value through an insecure channel; create a fresh link and investigate
+                    whether the original may have been opened.</p>
+                <div class="callout">
+                    <p><strong>Delivery tradeoff:</strong> once a confirmed retrieval claims the record, a network
+                        interruption may prevent a convenient retry. One-time semantics favor limiting duplicate access
+                        over reliable repeated delivery.</p>
+                </div>
+                <h2>How to create a one-time file download</h2>
+                <ol>
+                    <li>Open SecretShare and choose the File tab.</li>
+                    <li>Select one file no larger than 150 MB.</li>
+                    <li>Choose the shortest practical expiration.</li>
+                    <li>Add a passphrase if the link should not be the only access factor.</li>
+                    <li>Create the link, verify the recipient, and send the link through the selected channel.</li>
+                    <li>Send any passphrase separately and ask the recipient to confirm successful retrieval.</li>
+                </ol>
+                <p>For secret text, use the same workflow from the Secret text tab. Read the <a
+                        href="/encrypted-file-sharing">encrypted file sharing guide</a> for details about what is
+                    encrypted, or review <a href="/guides/link-preview-bots.html">how the preview-bot confirmation gate
+                        works</a>.</p>
+                <h2>One-time download FAQ</h2>
+                <div class="faq-list">
+                    <details>
+                        <summary>Does visiting the link destroy it immediately?</summary>
+                        <p>No. A visit checks availability. The encrypted record is consumed only after a person
+                            activates the confirmation control.</p>
+                    </details>
+                    <details>
+                        <summary>Can the sender retrieve the file again?</summary>
+                        <p>The sender receives the same one-time link and has no separate recovery copy from
+                            SecretShare. Keep an appropriate source copy outside the service if business policy requires
+                            it.</p>
+                    </details>
+                    <details>
+                        <summary>What does an expired or missing page mean?</summary>
+                        <p>The record may have been opened, expired, or never existed. The response intentionally does
+                            not disclose more detail.</p>
+                    </details>
+                    <details>
+                        <summary>Is a one-time link enough for highly privileged credentials?</summary>
+                        <p>It reduces persistence but does not replace least privilege, recipient verification,
+                            rotation, endpoint security, or an audited enterprise secrets workflow.</p>
+                    </details>
+                </div>
+                <div class="page-cta">
+                    <p>Create an encrypted link for one confirmed retrieval.</p><a class="btn-seal btn-seal-link"
+                        href="/#compose">Create a one-time link</a>
+                </div>
+            </article>
+        </section>
+    </main>
+    <footer class="footer">
+        <div class="shell footer-inner">
+            <p class="footer-brand">SecretShare</p>
+            <nav class="footer-nav" aria-label="Footer"><a href="/">Home</a><a href="/encrypted-file-sharing">Encrypted
+                    file sharing</a><a href="/resources.html">Guides</a><a href="/security.html">Security</a><a
+                    href="/privacy.html">Privacy</a><a href="/alternatives/one-time-secret">Alternatives</a></nav>
+            <p class="footer-note">One-time delivery is a risk-reduction control, not permanent storage.</p>
+        </div>
+    </footer>
+    <script src="/cookies.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Encrypted File Sharing with One-Time Links — SecretShare</title>
+    <meta name="description"
+        content="Encrypt and share files up to 150 MB through a self-destructing, one-time link. Browser-side AES-GCM encryption, optional passphrase, no account required.">
+    <link rel="canonical" href="https://secretshare.dev/encrypted-file-sharing">
+    <meta property="og:title" content="Encrypted File Sharing with One-Time Links — SecretShare">
+    <meta property="og:description"
+        content="Encrypt and share files up to 150 MB through a self-destructing, one-time link—no account required.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://secretshare.dev/encrypted-file-sharing">
+    <link rel="stylesheet" href="/styles.css?v=20260825-1">
+    <link rel="icon" type="image/png" href="/assets/secretshare-transparent.png">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2654122264996557"
+        crossorigin="anonymous"></script>
+    <script
+        type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Encrypted file sharing with one-time links","url":"https://secretshare.dev/encrypted-file-sharing","description":"A practical encrypted file sharing tool and explanation of its browser-side encryption and one-time retrieval model.","isPartOf":{"@type":"WebSite","name":"SecretShare","url":"https://secretshare.dev/"}}</script>
+</head>
+
+<body>
+    <a class="skip" href="#content">Skip to content</a>
+    <header class="topbar">
+        <div class="shell topbar-inner"><a class="brand" href="/"><span class="brand-mark" aria-hidden="true"><img
+                        src="/assets/secretshare-transparent.png" alt="" width="34" height="34"></span><span
+                    class="brand-name">SecretShare</span></a>
+            <nav class="topnav" aria-label="Main"><a href="/#compose">Send a secret</a><a
+                    href="/resources.html">Guides</a><a href="/security.html">Security</a></nav>
+            <p class="topbar-status"><span class="dot" aria-hidden="true"></span>Browser-side encryption</p>
+        </div>
+    </header>
+    <main id="content">
+        <section class="section content-hero">
+            <div class="shell">
+                <p class="breadcrumbs"><a href="/">Home</a> / Encrypted file sharing</p>
+                <p class="eyebrow">Encrypted file sharing &nbsp;/&nbsp; Up to 150 MB</p>
+                <h1 class="content-title">Encrypted file sharing with a one-time link.</h1>
+                <p class="content-lede">Send a configuration file, SSH key, JSON document, PDF, or another file
+                    without placing readable content on the SecretShare server. Encryption happens in your browser
+                    before upload, and the recipient retrieves the encrypted payload once.</p>
+            </div>
+        </section>
+        <section class="section">
+            <article class="shell article-shell article-body">
+                <h2>Share a file without creating an account</h2>
+                <p>Email attachments and chat uploads can remain in inboxes, archives, notifications, and backups long
+                    after a handoff is complete. SecretShare is designed for temporary delivery instead. Choose the File
+                    tab, select one file up to 150 MB, set an expiration, optionally add a passphrase, and create the
+                    encrypted link.</p>
+                <p>The file is read and encrypted as a single payload in the browser. Its original name, media type, and
+                    contents are encrypted together with AES-GCM. Only ciphertext, an initialization vector, a salt, and
+                    expiration metadata are uploaded. The binary ciphertext is uploaded without base64 expansion. This
+                    is intended for temporary handoffs—not collaboration, backups, or permanent document storage.</p>
+                <h2>How the encrypted file link works</h2>
+                <ol>
+                    <li><strong>Your browser creates the key.</strong> A 256-bit key is generated locally. If you
+                        provide a passphrase, it is used as additional key material and the recipient must enter the
+                        same value.</li>
+                    <li><strong>The file is encrypted locally.</strong> SecretShare encrypts the file bytes and metadata
+                        before making the upload request.</li>
+                    <li><strong>The link separates storage from the key.</strong> The record identifier is placed in the
+                        path while the decryption key is placed after <code>#</code>. Browsers do not include URL
+                        fragments in normal HTTP requests.</li>
+                    <li><strong>The recipient confirms retrieval.</strong> Opening the landing page checks whether the
+                        record is available. Selecting “Open and destroy” consumes it, preventing a chat preview bot
+                        from burning the link.</li>
+                    <li><strong>The browser decrypts the download.</strong> After retrieving the ciphertext, the
+                        recipient's browser decrypts it and creates a local download.</li>
+                </ol>
+                <div class="callout">
+                    <p><strong>Important limit:</strong> SecretShare accepts one text secret or one file per link, and
+                        files are limited to 150 MB. For larger files, use a purpose-built encrypted transfer service or
+                        an approved organizational storage system.</p>
+                </div>
+                <h2>Good uses for one-time encrypted file sharing</h2>
+                <ul>
+                    <li>Delivering a temporary <code>.env</code> file to a contractor before rotating its values.</li>
+                    <li>Passing a bootstrap SSH key during a controlled onboarding process.</li>
+                    <li>Sending a small certificate bundle, recovery-code export, or private configuration file.</li>
+                    <li>Moving sensitive information outside a long-lived ticket or chat history.</li>
+                </ul>
+                <p>A one-time link reduces persistence, but it does not control what the recipient does after download.
+                    Scope credentials narrowly, verify the recipient through a trusted channel, rotate temporary access,
+                    and prefer workload identity or a managed vault when systems need repeated access.</p>
+                <h2>Threat model and practical safeguards</h2>
+                <p>Client-side encryption protects the stored payload from being readable with the server's stored
+                    record alone. It does not remove every risk: anyone with the complete URL can attempt retrieval, a
+                    compromised endpoint can expose content, and users must trust the JavaScript served by the site. An
+                    optional passphrase reduces reliance on the link alone when the passphrase is delivered separately.
+                </p>
+                <p>Use the shortest practical expiration. SecretShare offers one-hour, 24-hour, and seven-day time
+                    limits, plus one-open behavior. If the link is sent to the wrong person or appears in a public
+                    place, treat the underlying credential as exposed and rotate it rather than relying only on
+                    deletion.</p>
+                <h2>Encrypted file sharing FAQ</h2>
+                <div class="faq-list">
+                    <details>
+                        <summary>What is the maximum file size?</summary>
+                        <p>150 MB. The browser reads and encrypts the whole file, so large transfers require enough
+                            device memory and may take longer on mobile or slower connections.</p>
+                    </details>
+                    <details>
+                        <summary>Does SecretShare store the filename?</summary>
+                        <p>The filename and media type are inside the encrypted payload. The server stores the encrypted
+                            record and operational metadata needed for expiry and one-time retrieval.</p>
+                    </details>
+                    <details>
+                        <summary>Can a link-preview bot download the file?</summary>
+                        <p>A normal page request can inspect availability but cannot consume the payload. Retrieval
+                            requires the explicit confirmation action.</p>
+                    </details>
+                    <details>
+                        <summary>Should I send the passphrase with the link?</summary>
+                        <p>No. When you use the optional passphrase, send it through a separate channel so possession of
+                            one message is not sufficient.</p>
+                    </details>
+                </div>
+                <div class="page-cta">
+                    <p>Encrypt a file up to 150 MB and create its one-time link.</p><a class="btn-seal btn-seal-link"
+                        href="/#compose">Send a file</a>
+                </div>
+            </article>
+        </section>
+    </main>
+    <footer class="footer">
+        <div class="shell footer-inner">
+            <p class="footer-brand">SecretShare</p>
+            <nav class="footer-nav" aria-label="Footer"><a href="/">Home</a><a href="/one-time-file-download">One-time
+                    downloads</a><a href="/resources.html">Security guides</a><a href="/security.html">Security</a><a
+                    href="/privacy.html">Privacy</a><a href="/alternatives/one-time-secret">Alternatives</a></nav>
+            <p class="footer-note">Encrypted delivery for short-lived secrets and files up to 150 MB.</p>
+        </div>
+    </footer>
+    <script src="/cookies.js"></script>
+</body>
+
+</html>

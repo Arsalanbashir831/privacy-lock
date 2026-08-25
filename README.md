@@ -16,7 +16,7 @@ Open `http://localhost:3000`. Do not serve `index.html` directly: link creation 
 
 - Active encrypted records are stored as mode-`0600` files in `.data/secrets`.
 - Text and files use AES-256-GCM; optional passphrases use PBKDF2-SHA-256 with 250,000 iterations.
-- Files are limited to 5 MB and records expire after at most seven days.
+- Files are limited to 150 MB and records expire after at most seven days.
 - Availability checks never consume data. A confirmation token and explicit POST atomically claim a record; the claimed file is deleted after its single response.
 - The email-notification prototype option was removed because this implementation intentionally has no email provider or plaintext recipient data.
 

@@ -7,6 +7,7 @@ COPY --chown=node:node package.json server.mjs public-files.mjs ./
 COPY --chown=node:node *.html *.js *.css *.txt *.xml ./
 COPY --chown=node:node assets ./assets
 COPY --chown=node:node guides ./guides
+COPY --chown=node:node alternatives ./alternatives
 RUN mkdir -p /app/.data/secrets && chown -R node:node /app/.data
 
 USER node

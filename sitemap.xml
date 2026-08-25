@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://secretshare.dev/</loc><lastmod>2026-08-24</lastmod></url>
-  <url><loc>https://secretshare.dev/resources.html</loc><lastmod>2026-08-24</lastmod></url>
+  <url><loc>https://secretshare.dev/</loc><lastmod>2026-08-25</lastmod></url>
+  <url><loc>https://secretshare.dev/encrypted-file-sharing</loc><lastmod>2026-08-25</lastmod></url>
+  <url><loc>https://secretshare.dev/one-time-file-download</loc><lastmod>2026-08-25</lastmod></url>
+  <url><loc>https://secretshare.dev/alternatives</loc><lastmod>2026-08-25</lastmod></url>
+  <url><loc>https://secretshare.dev/alternatives/one-time-secret</loc><lastmod>2026-08-25</lastmod></url>
+  <url><loc>https://secretshare.dev/alternatives/bitwarden-send</loc><lastmod>2026-08-25</lastmod></url>
+  <url><loc>https://secretshare.dev/alternatives/yopass</loc><lastmod>2026-08-25</lastmod></url>
+  <url><loc>https://secretshare.dev/resources.html</loc><lastmod>2026-08-25</lastmod></url>
   <url><loc>https://secretshare.dev/guides/sharing-credentials.html</loc><lastmod>2026-08-24</lastmod></url>
   <url><loc>https://secretshare.dev/guides/url-fragment-keys.html</loc><lastmod>2026-08-24</lastmod></url>
   <url><loc>https://secretshare.dev/guides/link-preview-bots.html</loc><lastmod>2026-08-24</lastmod></url>

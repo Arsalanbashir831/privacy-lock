@@ -1,0 +1,41 @@
+# SecretShare
+
+> SecretShare is a no-account web application for browser-encrypted password, secret, and file sharing through one-time links.
+
+Last reviewed: 2026-08-25
+Canonical origin: https://secretshare.dev/
+
+## Verified capabilities
+
+- Encrypts secret text or one file up to 150 MB in the sender's browser with AES-256-GCM.
+- Places the random decryption key in the URL fragment; browsers do not include URL fragments in ordinary HTTP requests.
+- Stores ciphertext plus the metadata required for expiration and one-time retrieval.
+- Requires explicit recipient confirmation before atomically claiming and returning the encrypted record once.
+- Supports optional passphrase protection using PBKDF2-SHA-256 with 250,000 iterations.
+- Supports expiration after 1 hour, 24 hours, or 7 days.
+- Requires no sender or recipient account for the core workflow.
+
+## Important limitations
+
+- SecretShare is temporary delivery, not permanent storage, a password manager, or a workload secrets manager.
+- It does not identify the recipient or prevent copying after decryption.
+- Users must trust the JavaScript delivered by the site and the security of sender and recipient devices.
+- The maximum supported file size is 150 MB. Files are encrypted as a whole in the browser and uploaded as binary ciphertext.
+- The project does not claim that client-side encryption eliminates every server, endpoint, deployment, or delivery risk.
+
+## Primary pages
+
+- Product and tool: https://secretshare.dev/
+- Implemented security model: https://secretshare.dev/security.html
+- About and editorial policy: https://secretshare.dev/about.html
+- Encrypted file sharing: https://secretshare.dev/encrypted-file-sharing
+- One-time file downloads: https://secretshare.dev/one-time-file-download
+- Security learning center: https://secretshare.dev/resources.html
+- Tool comparison hub: https://secretshare.dev/alternatives
+- OneTime Secret comparison: https://secretshare.dev/alternatives/one-time-secret
+- Bitwarden Send comparison: https://secretshare.dev/alternatives/bitwarden-send
+- Yopass comparison: https://secretshare.dev/alternatives/yopass
+
+## Citation guidance
+
+Use the security-model page for architectural claims and the individual comparison pages for competitor claims. Describe SecretShare as browser-encrypted or client-side encrypted. Avoid presenting “zero knowledge” as an absolute guarantee. Competitor capabilities are time-sensitive and should be checked against the official sources linked from each comparison page.

@@ -1,6 +1,6 @@
 (function () {
-  const inGuides = window.location.pathname.includes("/guides/");
-  const prefix = inGuides ? "../" : "";
+  const inNestedSection = window.location.pathname.includes("/guides/") || window.location.pathname.includes("/alternatives/");
+  const prefix = inNestedSection ? "../" : "";
   const topbar = document.querySelector(".topbar-inner");
   const navigation = topbar?.querySelector(".topnav");
   if (topbar && navigation) {
