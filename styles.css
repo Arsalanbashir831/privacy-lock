@@ -503,6 +503,14 @@ code{ font-family: var(--mono); font-size: .88em; background: rgba(30,58,85,.09)
 .footer-nav a:hover{ color: var(--paper); text-decoration:underline; }
 .footer-note{ margin:0; font-size:13.5px; max-width: 60ch; color: rgba(230,227,218,.45); }
 
+/* Third-party advertising is isolated in sandboxed frames, never in the header. */
+.ad-zone{ width:100%; padding-block:clamp(22px,4vw,42px); border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); background:rgba(242,240,234,.45); text-align:center; overflow:hidden; }
+.ad-zone-bottom{ border-bottom:0; }
+.ad-zone-label{ margin:0 0 10px; color:var(--ink-soft); font:10px var(--mono); letter-spacing:.14em; text-transform:uppercase; }
+.ad-frame{ display:block; margin:0 auto; border:0; max-width:100%; background:transparent; }
+.ad-frame-native{ width:min(100%,970px); height:280px; }
+.ad-frame-rectangle{ width:160px; height:300px; }
+
 /* ── privacy policy & cookie preference ───────────────────── */
 .policy-hero{ padding-bottom: clamp(30px, 5vw, 56px); border-bottom: 1px solid var(--rule); }
 .policy-hero .eyebrow{ margin-bottom: 20px; }

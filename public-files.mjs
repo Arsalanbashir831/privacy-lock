@@ -14,6 +14,8 @@ export const PUBLIC_FILES = new Set([
   "alternatives/one-time-secret.html",
   "alternatives/bitwarden-send.html",
   "alternatives/yopass.html",
+  "ads/native.html",
+  "ads/rectangle.html",
   "google71faf693e083cc39.html",
   "guides/client-side-encryption.html",
   "guides/env-files.html",

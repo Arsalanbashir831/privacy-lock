@@ -275,7 +275,7 @@ async function serveStatic(pathname, res) {
     if (extname(file) === ".html") {
       const nonce = randomBytes(16).toString("base64");
       content = Buffer.from(content.toString("utf8").replaceAll("<script", `<script nonce="${nonce}"`));
-      extra["Content-Security-Policy"] = `default-src 'self'; object-src 'none'; script-src 'nonce-${nonce}' 'unsafe-inline' 'unsafe-eval' 'strict-dynamic' https: http:; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https:; frame-src https:; base-uri 'none'; frame-ancestors 'none'; form-action 'self'`;
+      extra["Content-Security-Policy"] = `default-src 'self'; object-src 'none'; script-src 'nonce-${nonce}' 'unsafe-inline' 'unsafe-eval' 'strict-dynamic' https: http:; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https:; frame-src 'self' https:; base-uri 'none'; frame-ancestors 'none'; form-action 'self'`;
     }
     res.writeHead(200, headers({
       ...extra

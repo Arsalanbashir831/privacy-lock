@@ -8,6 +8,7 @@ COPY --chown=node:node *.html *.js *.css *.txt *.xml ./
 COPY --chown=node:node assets ./assets
 COPY --chown=node:node guides ./guides
 COPY --chown=node:node alternatives ./alternatives
+COPY --chown=node:node ads ./ads
 RUN mkdir -p /app/.data/secrets && chown -R node:node /app/.data
 
 USER node
