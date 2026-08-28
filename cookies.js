@@ -22,6 +22,11 @@
     topbar.insertBefore(menuButton, navigation);
   }
 
+  /*
+   * Advertising is temporarily disabled so SecretShare runs as a completely
+   * free, ad-free tool. Keep this implementation commented for easy review or
+   * a future opt-in reintroduction; none of the code below executes.
+   *
   function adFrame(source, label, className) {
     const zone = document.createElement("aside");
     zone.className = `ad-zone ${className === "ad-frame-rectangle" ? "ad-zone-bottom" : "ad-zone-middle"}`;
@@ -119,4 +124,5 @@
       banner.querySelector("button")?.focus();
     });
   });
+  */
 })();

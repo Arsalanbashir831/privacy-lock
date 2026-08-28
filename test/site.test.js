@@ -21,7 +21,8 @@ test("every public page has discovery and accessibility metadata", () => {
     assert.match(html, /<link rel="canonical" href="https:\/\/secretshare\.dev\//, `${file}: canonical`);
     assert.match(html, /<meta property="og:title"/, `${file}: Open Graph title`);
     assert.match(html, /<meta property="og:url"/, `${file}: Open Graph URL`);
-    assert.match(html, /pagead2\.googlesyndication\.com\/pagead\/js\/adsbygoogle\.js\?client=ca-pub-2654122264996557/, `${file}: AdSense publisher code`);
+    const activeHtml = html.replace(/<!--[\s\S]*?-->/g, "");
+    assert.doesNotMatch(activeHtml, /pagead2\.googlesyndication\.com|adsbygoogle|profitableratecpmnetwork|highrevenueformat|quge5\.com|n6wxm\.com/, `${file}: active advertising loader`);
     assert.match(html, /<h1\b/, `${file}: H1`);
     assert.match(html, /<nav class="topnav"/, `${file}: main navigation`);
   }
@@ -98,30 +99,33 @@ test("the 150 MB file limit is consistent across browser, server, and proxy", ()
   assert.doesNotMatch(app, /accept\s*=/, "the file picker should not restrict supported file types");
 });
 
-test("third-party ads are consented, sandboxed, and kept out of headers and recipient pages", () => {
+test("third-party advertising is fully disabled", () => {
   const advertising = readFileSync("cookies.js", "utf8");
-  assert.match(advertising, /data-cookie-choice="accepted"/);
-  assert.match(advertising, /data-cookie-choice="declined"/);
-  assert.match(advertising, /sandbox", "allow-scripts allow-popups"/);
-  assert.match(advertising, /\^\\\/s\\\//, "recipient URLs must suppress ads");
-  assert.match(advertising, /middleAnchor\?\.after/);
-  assert.match(advertising, /footer\.before/);
-  assert.match(advertising, /function unmountAds\(\)/);
+  const activeAdvertising = advertising.replace(/\/\*[\s\S]*?\*\//g, "");
+  assert.doesNotMatch(activeAdvertising, /mountAds|adFrame|data-cookie-choice|\/ads\//);
+
+  for (const workerFile of ["sw.js", "sw2.js"]) {
+    const worker = readFileSync(workerFile, "utf8");
+    const activeWorker = worker.replace(/\/\*[\s\S]*?\*\//g, "");
+    assert.doesNotMatch(activeWorker, /importScripts|3nbf4\.com|zoneId/, `${workerFile}: active advertising worker`);
+  }
 
   const nativeAd = readFileSync("ads/native.html", "utf8");
   const rectangleAd = readFileSync("ads/rectangle.html", "utf8");
-  assert.match(nativeAd, /profitableratecpmnetwork\.com/);
-  assert.match(nativeAd, /quge5\.com/);
-  assert.match(rectangleAd, /highrevenueformat\.com/);
+  const activeNativeAd = nativeAd.replace(/<!--[\s\S]*?-->/g, "");
+  const activeRectangleAd = rectangleAd.replace(/<!--[\s\S]*?-->/g, "");
+  assert.doesNotMatch(activeNativeAd, /<script\b|profitableratecpmnetwork\.com|quge5\.com/);
+  assert.doesNotMatch(activeRectangleAd, /<script\b|highrevenueformat\.com/);
   assert.match(nativeAd, /noindex,nofollow,noarchive/);
   assert.match(rectangleAd, /noindex,nofollow,noarchive/);
-  assert.equal(isPublicFile("ads/native.html"), true);
-  assert.equal(isPublicFile("ads/rectangle.html"), true);
+  assert.equal(isPublicFile("ads/native.html"), false);
+  assert.equal(isPublicFile("ads/rectangle.html"), false);
+  assert.equal(isPublicFile("ads.txt"), false);
 
   for (const file of pages) {
     const html = readFileSync(file, "utf8");
-    const header = html.match(/<header[\s\S]*?<\/header>/)?.[0] || "";
-    assert.doesNotMatch(header, /ad-zone|profitableratecpmnetwork|highrevenueformat|quge5/, `${file}: ad in header`);
+    const activeHtml = html.replace(/<!--[\s\S]*?-->/g, "");
+    assert.doesNotMatch(activeHtml, /pagead2|adsbygoogle|profitableratecpmnetwork|highrevenueformat|quge5|n6wxm/, `${file}: active ad code`);
   }
 });
 
